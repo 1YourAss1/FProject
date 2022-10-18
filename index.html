@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <title>FP</title>
+</html>
+<body>
+    <script>
+        const xhr = new XMLHttpRequest();
+        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+            .then(FingerprintJS => FingerprintJS.load())
+
+        fpPromise
+        .then(fp => fp.get())
+        .then(result => {
+            console.log(result.components)            
+            document.body.innerHTML = '<pre>' + JSON.stringify(result.components, null, 2) + '</pre>';
+
+            const visitorId = result.visitorId
+            console.log("FingerprintJS: " + visitorId)
+
+            xhr.open("POST", "/");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(result.components));
+        })
+    </script>
+
+</body>
