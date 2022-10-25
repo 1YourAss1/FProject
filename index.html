@@ -4,6 +4,12 @@
     <title>FP</title>
 </html>
 <body>
+    <form method="post">
+        <p><input placeholder="Enter name" required="ture" name="name"></p>
+        <p><textarea id="fpTextArea" name="fingerprint" readonly="true" required="true" cols="50" rows="20"></textarea></p>
+        <p><input type="submit" value="Send"></p>
+    </form>
+
     <script>
         const xhr = new XMLHttpRequest();
         const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
@@ -12,15 +18,17 @@
         fpPromise
         .then(fp => fp.get())
         .then(result => {
-            console.log(result.components);      
-            document.body.innerHTML = '<pre>' + JSON.stringify(result.components, null, 2) + '</pre>';
+            console.log(result.components); 
+            let fpTextArea = document.getElementById("fpTextArea");
+            fpTextArea.append(JSON.stringify(result.components));
+            // document.body.innerHTML = '<pre>' + JSON.stringify(result.components, null, 2) + '</pre>';
 
-            const visitorId = result.visitorId;
-            console.log("FingerprintJS: " + visitorId);
+            // const visitorId = result.visitorId;
+            // console.log("FingerprintJS: " + visitorId);
 
-            xhr.open("POST", "/");
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify(result.components));
+            // xhr.open("POST", "/");
+            // xhr.setRequestHeader("Content-Type", "application/json");
+            // xhr.send(JSON.stringify(result.components));
         })
     </script>
 
